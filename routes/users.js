@@ -4,6 +4,14 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session || !req.session.userId) {
+      res.redirect('./login') // redirect to the login page
+    } else { 
+        next (); // move to the next middleware function
+    } 
+}
+
 
 
 router.get('/register', function (req, res, next) {
@@ -53,6 +61,7 @@ router.post('/loggedin', (req, res, next) => {
             }
             else if (result == true) {
                 // TODO: Send message
+                req.session.userId = req.body.username;
                 res.send(`Login worked, Hello, ${user.firstName} ${user.lastName}`)
             }
             else {
@@ -63,7 +72,7 @@ router.post('/loggedin', (req, res, next) => {
     })
 })
 
-router.get('/list', function(req, res, next) {
+router.get('/list', redirectLogin,function(req, res, next) {
         let sqlquery = "SELECT id, username, firstName, lastName, email FROM users" // query database to get all the books
         // execute sql query
         db.query(sqlquery, (err, result) => {
@@ -73,6 +82,16 @@ router.get('/list', function(req, res, next) {
             res.render("UserList.ejs", {users:result})
         });
     });
+
+router.get('/logout', redirectLogin, (req,res) => {
+        req.session.destroy(err => {
+        if (err) {
+            return res.redirect('./')
+        }
+        res.send('you are now logged out. <a href='+'./'+'>Home</a>');
+        })
+    })
+
 
 // Export the router object so index.js can access it
 module.exports = router
