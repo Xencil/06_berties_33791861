@@ -58,9 +58,8 @@ router.post('/loggedin', (req, res, next) => {
     const plainPassword = req.body.password
     let sqlquery ="SELECT * FROM users WHERE username = ?"
     db.query(sqlquery, [username], (err, results) => {
-        if (err)
-            next(err)
-        if (results.length === 0) {
+        if (err) return next(err)
+        if (!results || results.length === 0) {
             return res.send('Login failed: username not found')
         }
         const user = results[0]
