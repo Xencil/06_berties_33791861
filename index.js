@@ -23,10 +23,10 @@ app.use(session({
 
 // Define the database connection pool
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'berties_books_app',
-    password: 'qwertyuiop',
-    database: 'berties_books',
+    host: process.env.BB_HOST,
+    user: process.env.BB_USER,
+    password: process.env.BB_PASSWORD,
+    database: process.env.BB_DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -35,6 +35,9 @@ global.db = db;
 
 // Tell Express that we want to use EJS as the templating engine
 app.set('view engine', 'ejs')
+
+
+app.use(expressSanitizer());
 
 // Set up the body parser 
 app.use(express.urlencoded({ extended: true }))

@@ -1,10 +1,12 @@
 // Create a new router
 const express = require("express")
 const router = express.Router()
+const { check, validationResult } = require('express-validator')
+
 
 const redirectLogin = (req, res, next) => {
     if (!req.session || !req.session.userId) {
-      res.redirect('./login') // redirect to the login page
+      res.redirect('/users/login') // redirect to the login page
     } else { 
         next (); // move to the next middleware function
     } 
@@ -30,11 +32,19 @@ router.get('/list', redirectLogin,function(req, res, next) {
         });
     });
 
-router.post('/bookadded', redirectLogin,function (req, res, next) {
+router.get('/addbook', redirectLogin, (req, res) => {
+    res.render('addbook.ejs', { errors: [] })
+})
+
+router.post('/bookadded', redirectLogin,[check('name').notEmpty().withMessage('book title is needed'),check('price').notEmpty().isFloat({ min: 0.01, max: 999.99 }).withMessage('price must be between 0.01-999.99')],function (req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        res.render('./addbook', { errors: errors.array() })
+    }
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)"
     // execute sql query
-    let newrecord = [req.body.name, req.body.price]
+    let newrecord = [req.sanitize(req.body.name), req.body.price]
     db.query(sqlquery, newrecord, (err, result) => {
         if (err) {
             next(err)
