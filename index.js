@@ -4,6 +4,7 @@ var ejs = require('ejs')
 const path = require('path')
 var session = require ('express-session')
 const expressSanitizer = require('express-sanitizer');
+require('dotenv').config();
 
 
 var mysql = require('mysql2');
