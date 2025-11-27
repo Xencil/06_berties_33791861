@@ -3,6 +3,8 @@ var express = require ('express')
 var ejs = require('ejs')
 const path = require('path')
 var session = require ('express-session')
+const expressSanitizer = require('express-sanitizer');
+
 
 var mysql = require('mysql2');
 
