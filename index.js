@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Define our application-specific data
 app.locals.shopData = {shopName: "Bertie's Books"}
 
-const weatherRoutes = require('./routes/weather')
+const weatherRoutes =require('./routes/weather')
 app.use('/weather', weatherRoutes)
 
 
@@ -67,7 +67,7 @@ app.use('/users', usersRoutes)
 const booksRoutes = require('./routes/books')
 app.use('/books', booksRoutes)
 
-const apiRoutes = require('./routes/api')  
+const apiRoutes =require('./routes/api')  
 app.use('/api', apiRoutes)   
 
 // Start the web app listening
