@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <title><%=shopData.shopName%>: Search Books</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<h1>Search Books</h1>
+
+<form method="GET" action="/api/books">
+        <input type="text" name="search" placeholder="Enter a keyword" value="<%= search || '' %>">
+    <button type="submit" value = "keyword">Enter</button>
+        <input type="number" step="0.01" name="minprice" placeholder="Min Price">
+        <input type="number" step="0.01" name="maxprice" placeholder="Max Price">
+    <button type="submit" value = "price">Enter</button>
+    <label>
+        <input type="checkbox"name="sort" value="name" <%= sort === 'name' ?'checked':'' %>>sort by Name
+    </label>
+    <label>
+        <input type="checkbox" name="sort"value="price"<%= sort==='price' ?'checked':''%>> sort by Price
+    </label>
+    <button type="submit" value = "price">Enter</button>
+</form>
+<% if (error) { %>
+    <p><%= error %></p>
+<% } %>
+<% if (books && books.length > 0) { %>
+    <h2>Results:</h2>
+    <ul>
+        <% books.forEach(function(book) { %>
+            <li>
+                <strong><%=book.name %></strong> by <%=book.price%>
+            </li>
+        <%});%>
+    </ul>
+<% }else if (books){%>
+    <p>no titles found for "<%=search%>"</p>
+<% } %>
+</body>
+</html>

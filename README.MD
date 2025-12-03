@@ -45,3 +45,9 @@ Where i added sanitation:
 -the book name
 i didnt sanitize the book price due to it be a numerical field that cant contain executable scripts.
 I also didnt sanitize the password due to it being hashed already. The other fields are shown to the user in their raw from so they dont require to be sanitized.
+
+BooksAPI:
+The books api is responsible for getting the books from the database with the conditionals being keyword search,price range, and two sorting filters for price and alphabetical order of the titles.
+
+Weather API:
+The weather API gets weather from the input location using openweathermap API.
